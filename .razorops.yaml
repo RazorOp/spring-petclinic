@@ -2,4 +2,4 @@ tasks:
     build-deps:
         image: maven:3.6.2-jdk-11-slim
         commands:
-            - mvn -q clean package -D maven.test.skip=true
+            - mvn clean package -Dmaven.test.skip=true
