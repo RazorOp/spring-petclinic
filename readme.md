@@ -46,7 +46,7 @@ Further documentation is provided [here](https://github.com/spring-projects/spri
 
 
 # how to setup Razorops CI/CD 
-<img src="https://razorops.com/images/pipeline-dashboard.png" height="200">
+<img src="https://razorops.com/images/pipeline-dashboard.png" height="400">
 
 
 - Signup Razorops
