@@ -1,5 +1,36 @@
+variables:
+  - MAVEN_OPTS=-Dmaven.repo.local=.m2
+
 tasks:
-    build-deps:
-        image: maven:3.6.2-jdk-11-slim
-        commands:
-            - mvn clean package -Dmaven.test.skip=true
+  download-deps:
+    type: restore
+    keys:
+      - mvn-cache-[[ checksum "pom.xml" ]]
+      - mvn-cache-
+
+  package:
+    ## if you are using maven for dependency management, otherwise you can use docker images for gradle, ant or sbt
+    image: maven:3.5.4-jdk-9-slim
+    commands:
+      - mvn -q clean package
+    services:
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          - POSTGRES_USER=root
+          - POSTGRES_DB=ci
+
+  save-deps:
+    type: rebuild
+    key: mvn-cache-[[ checksum "pom.xml" ]]
+    paths:
+      - .m2
+
+  # deploy:
+  #   image: alpine:edge
+  #   commands:
+  #     - apk add --no-cache openssh
+  #     - sh deploy.sh
+  #   variables:
+      #- INSTANCE=ubuntu@<IP>
+      #- PACKAGE_PATH=target/demo-java-spring-0.0.1-SNAPSHOT.war
+      #- WEB_ADDRESS=http://<IP>:8080
